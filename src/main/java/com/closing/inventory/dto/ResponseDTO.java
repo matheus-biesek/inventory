@@ -1,3 +1,3 @@
 package com.closing.inventory.dto;
 
-public record ResponseDTO (String name, String Token) {}
+public record ResponseDTO (String token) {}

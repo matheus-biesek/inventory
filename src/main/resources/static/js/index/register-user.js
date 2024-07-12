@@ -1,6 +1,5 @@
 async function registerUser() {
     const username = document.getElementById('txt-username').value;
-    const email = document.getElementById('txt-email').value;
     const password = document.getElementById('txt-password').value;
     const confirmPassword = document.getElementById('txt-confirm-password').value;
 
@@ -14,13 +13,13 @@ async function registerUser() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, email, password })
+        body: JSON.stringify({ username, password })
     });
 
     if (response.ok) {
         const data = await response.json();
-        sessionStorage.setItem('token', data.Token);
-        sessionStorage.setItem('username', data.name);
+        sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('username', data.username);
         alert('Registro bem-sucedido!');
         window.location.href = '/login-user';
     } else {
