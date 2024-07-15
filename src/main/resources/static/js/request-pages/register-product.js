@@ -7,7 +7,10 @@ import {
 import {
     sendPostRequest,
     sendGetRequest,
+    confirmToken,
 } from '../utils/func-ipa.js';
+
+confirmToken();
 
 function stringListStockProduct(){
     sendGetRequest('/ipa-product/string-list-stock', 'result-string-list-stock-product');

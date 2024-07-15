@@ -8,7 +8,10 @@ import {
 import {
     sendPostRequest,
     sendGetRequest,
+    confirmToken,
 } from '../utils/func-ipa.js';
+
+confirmToken();
 
 //Functions in HTML
 function stringListStockExpenditure() {

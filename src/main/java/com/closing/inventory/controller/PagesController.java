@@ -1,4 +1,4 @@
-package com.closing.inventory.controller.page.html;
+package com.closing.inventory.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +31,9 @@ public class PagesController {
         return "analyze";
     }
 
-    @GetMapping("/register-user")
+    @GetMapping("/register")
     public String pageRegisterUser() { return "register-user"; }
 
-    @GetMapping("/login-user")
-    public String pageLoginUser() { return "login-user"; }
+    @GetMapping("/login")
+    public String pageLoginUser() { return "login"; }
 }

@@ -3,6 +3,7 @@ package com.closing.inventory.controller.rest.controller;
 import com.closing.inventory.dto.LoginRequestDTO;
 import com.closing.inventory.dto.RegisterRequestDTO;
 import com.closing.inventory.dto.ResponseDTO;
+import com.closing.inventory.dto.TokenRequestDTO;
 import com.closing.inventory.infra.security.TokenService;
 import com.closing.inventory.model.user.User;
 import com.closing.inventory.repository.user.UserRepository;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Optional;
 
 @RestController
@@ -47,5 +47,10 @@ public class AuthController {
             return ResponseEntity.ok(new ResponseDTO(token));
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/token-is-valid")
+    public boolean tokenIsValid(@RequestBody TokenRequestDTO body){
+        return this.tokenService.booleanValidateToken(body.token());
     }
 }

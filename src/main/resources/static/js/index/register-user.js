@@ -19,9 +19,9 @@ async function registerUser() {
     if (response.ok) {
         const data = await response.json();
         sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('username', data.username);
-        alert('Registro bem-sucedido!');
-        window.location.href = '/login-user';
+
+        alert('Cadastro feito com sucesso!');
+        window.location.href = '/register-material';
     } else {
         document.getElementById('register-result').textContent = 'Falha no registro';
     }

@@ -1,3 +1,5 @@
+ARRUMAR TODAS AS FIUNÇÕES DE ACORDO COM O PROGRAMA QUE ESTA NO WINDOWNS.
+
 export function getInputExpenditure() {
     return {
         name: document.getElementById('txt-name-expenditure').value,

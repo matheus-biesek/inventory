@@ -1,3 +1,11 @@
+import {
+    confirmToken,
+} from '../utils/func-ipa.js';
+
+confirmToken();
+
+const token = sessionStorage.getItem('token');
+
 class ChartManager {
     constructor(endpoint, chartId, label, bgColor, borderColor, titleText, chartType = 'bar') {
         this.endpoint = endpoint;
@@ -15,7 +23,11 @@ class ChartManager {
 
     async fetchData() {
         try {
-            const response = await fetch(this.endpoint);
+            const response = await fetch(this.endpoint, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const data = await response.json();
             this.renderChart(data);
         } catch (error) {
@@ -111,10 +123,20 @@ class ComparisonChartManager extends ChartManager {
 
     async fetchData() {
         try {
-            const [expenseData, revenueData] = await Promise.all([
-                fetch(this.endpoint).then(response => response.json()),
-                fetch(this.revenueEndpoint).then(response => response.json())
+            const [expenseResponse, revenueResponse] = await Promise.all([
+                fetch(this.endpoint, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }),
+                fetch(this.revenueEndpoint, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
             ]);
+            const expenseData = await expenseResponse.json();
+            const revenueData = await revenueResponse.json();
             this.renderChart(expenseData, revenueData);
         } catch (error) {
             console.error('Erro ao obter os dados:', error);
