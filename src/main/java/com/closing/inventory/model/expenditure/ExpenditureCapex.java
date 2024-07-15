@@ -23,7 +23,7 @@ public class ExpenditureCapex extends Expenditure {
     @JoinColumn(name = "material_uuid", nullable = false)
     private Material material;
 
-    public ExpenditureCapex(Material materialFound, BigDecimal value, String observation, int amount) {
+    public ExpenditureCapex(Material materialFound, BigDecimal value, String observation, double amount) {
         this.material = materialFound;
         setValue(value);
         setObservation(observation);

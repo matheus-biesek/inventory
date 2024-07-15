@@ -24,9 +24,9 @@ public class MovementsHistoric {
     private LocalDateTime localDateTime;
 
     @Column(nullable = false)
-    private int movementsAmount;
+    private double movementsAmount;
 
-    protected MovementsHistoric(LocalDateTime moveDate, int amount) {
+    protected MovementsHistoric(LocalDateTime moveDate, double amount) {
         this.localDateTime = moveDate;
         this.movementsAmount = amount;
     }

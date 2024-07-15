@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-// is better to change this class for record.
 public class ExpenditureSend {
 
     private String name;
@@ -24,5 +23,5 @@ public class ExpenditureSend {
 
     private String observation;
 
-    private int amount;
+    private double amount;
 }

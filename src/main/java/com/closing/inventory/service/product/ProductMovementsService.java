@@ -16,7 +16,7 @@ public class ProductMovementsService {
     @Autowired
     private ProductMovementsRepository productMovementsRepository;
 
-    public void registerMovements(Product product, int amount){
+    public void registerMovements(Product product, double amount){
         ProductMovements productMovements = new ProductMovements(product, LocalDateTime.now(), amount);
         productMovementsRepository.save(productMovements);
     }

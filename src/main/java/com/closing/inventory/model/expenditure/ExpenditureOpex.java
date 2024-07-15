@@ -29,7 +29,7 @@ public class ExpenditureOpex extends Expenditure {
     @Column(nullable = false)
     private String width;
 
-    public ExpenditureOpex(String name, String size, String width, BigDecimal value, String observation, int amount) {
+    public ExpenditureOpex(String name, String size, String width, BigDecimal value, String observation, double amount) {
         this.name = name;
         this.size = size;
         this.width = width;

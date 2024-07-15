@@ -16,7 +16,7 @@ public class MaterialMovementsService {
     @Autowired
     MaterialMovementsRepository materialMovementsRepository;
 
-    public void registerMovements(Material material, int amount){
+    public void registerMovements(Material material, double amount){
         MaterialMovements materialMovements = new MaterialMovements(material, LocalDateTime.now(), amount);
         materialMovementsRepository.save(materialMovements);
     }

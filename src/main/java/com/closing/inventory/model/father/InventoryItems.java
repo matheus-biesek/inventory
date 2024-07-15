@@ -29,6 +29,6 @@ public class InventoryItems {
     private String width;
 
     @Column(nullable = false)
-    private int amount;
+    private double amount;
 
 }

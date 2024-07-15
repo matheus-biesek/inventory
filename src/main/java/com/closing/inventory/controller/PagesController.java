@@ -31,7 +31,7 @@ public class PagesController {
         return "analyze";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/register-user")
     public String pageRegisterUser() { return "register-user"; }
 
     @GetMapping("/login")

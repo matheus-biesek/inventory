@@ -1,9 +1,3 @@
-import {
-    confirmToken,
-} from '../utils/func-ipa.js';
-
-confirmToken();
-
 const token = sessionStorage.getItem('token');
 
 class ChartManager {

@@ -21,7 +21,7 @@ public class MaterialMovements extends MovementsHistoric {
     @JoinColumn(name = "material_uuid", nullable = false)
     private Material material;
 
-    public MaterialMovements(Material material, LocalDateTime localDateTime, int movementsAmount) {
+    public MaterialMovements(Material material, LocalDateTime localDateTime, double movementsAmount) {
         super(localDateTime, movementsAmount);
         this.material = material;
     }

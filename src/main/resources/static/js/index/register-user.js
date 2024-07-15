@@ -21,7 +21,7 @@ async function registerUser() {
         sessionStorage.setItem('token', data.token);
 
         alert('Cadastro feito com sucesso!');
-        window.location.href = '/register-material';
+        window.location.href = '/register-product';
     } else {
         document.getElementById('register-result').textContent = 'Falha no registro';
     }

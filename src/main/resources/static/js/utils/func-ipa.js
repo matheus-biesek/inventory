@@ -1,6 +1,5 @@
 export function sendPostRequest(endpoint, data, resultElementId) {
     const token = sessionStorage.getItem('token'); // Recupera o token da sessionStorage
-
     fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -9,47 +8,43 @@ export function sendPostRequest(endpoint, data, resultElementId) {
         },
         body: JSON.stringify(data)
     })
-        .then(response => response.text())
-        .then(result => {
-            document.getElementById(resultElementId).innerHTML = formatResult(result);
-        })
-        .catch(error => console.error('Erro:', error));
+    .then(response => response.text())
+    .then(result => {
+        document.getElementById(resultElementId).innerHTML = formatResult(result);
+    })
+    .catch(error => console.error('Erro:', error));
 }
 
 export function sendGetRequest(endpoint, resultElementId) {
-    const token = sessionStorage.getItem('token'); // Recupera o token da sessionStorage
-
+    const token = sessionStorage.getItem('token');
     fetch(endpoint, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}` // Adiciona o token no cabeçalho Authorization
+            'Authorization': `Bearer ${token}`
         }
     })
-        .then(response => response.text())
-        .then(result => {
-            document.getElementById(resultElementId).innerHTML = formatResult(result);
-        })
-        .catch(error => console.error('Erro:', error));
+    .then(response => response.text())
+    .then(result => {
+        document.getElementById(resultElementId).innerHTML = formatResult(result);
+    })
+    .catch(error => console.error('Erro:', error));
 }
 
 export function formatResult(result) {
     const lines = result.split('\n');
-    const formattedResult = lines.map((line, index) => {
+    return lines.map((line, index) => {
         if (index === 0) {
             return `<p>${line}</p>`;
         }
         return `<p>${line.trim()}</p>`;
     }).join('');
-    return formattedResult;
 }
 
 export async function confirmToken() {
     const token = sessionStorage.getItem('token');
-
     if (!token) {
         window.location.href = '/login';
     }
-
     try {
         const response = await fetch('/auth/token-is-valid', {
             method: 'POST',

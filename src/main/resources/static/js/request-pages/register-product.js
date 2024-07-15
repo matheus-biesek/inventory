@@ -7,19 +7,19 @@ import {
 import {
     sendPostRequest,
     sendGetRequest,
-    confirmToken,
 } from '../utils/func-ipa.js';
-
-confirmToken();
 
 function stringListStockProduct(){
     sendGetRequest('/ipa-product/string-list-stock', 'result-string-list-stock-product');
 }
 
 function createProduct() {
-    const product = getInputItem("txt-name-product", "txt-size-product", "txt-width-product");
-    if (isInputValid(product)) {
-        sendPostRequest('/ipa-product/create', product, 'result-create-product');
+    document.getElementById("result-create-product").innerHTML = "";
+    if (window.confirm("Você tem certeza que deseja adicionar um novo produto no banco de dados?")) {
+        const product = getInputItem("txt-name-product", "txt-size-product", "txt-width-product");
+        if (isInputValid(product)) {
+            sendPostRequest('/ipa-product/create', product, 'result-create-product');
+        }
     }
 }
 
@@ -31,9 +31,12 @@ function stringListMovementsOfProductSend() {
 }
 
 function addQuantityProduct() {
-    const moveRequest = getInputAddQuantityItem("txt-name-product", "txt-size-product", "txt-width-product", "num-add-quantity-product");
-    if (isInputValid(moveRequest, false, true)) {
-        sendPostRequest('/ipa-product/append-quantity', moveRequest, 'result-add-quantity-product');
+    document.getElementById("result-add-quantity-product").innerHTML = "";
+    if (window.confirm("Você tem certeza que deseja adicionar uma nova quantidade no produto?")) {
+        const moveRequest = getInputAddQuantityItem("txt-name-product", "txt-size-product", "txt-width-product", "num-add-quantity-product");
+        if (isInputValid(moveRequest, false, true)) {
+            sendPostRequest('/ipa-product/append-quantity', moveRequest, 'result-add-quantity-product');
+        }
     }
 }
 

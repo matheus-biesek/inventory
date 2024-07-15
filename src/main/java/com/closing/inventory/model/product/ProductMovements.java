@@ -22,7 +22,7 @@ public class ProductMovements extends MovementsHistoric {
     @JoinColumn(name = "product_uuid", nullable = false)
     private Product product;
 
-    public ProductMovements(Product product, LocalDateTime localDateTime, int movementsAmount) {
+    public ProductMovements(Product product, LocalDateTime localDateTime, double movementsAmount) {
         super(localDateTime, movementsAmount);
         this.product = product;
     }

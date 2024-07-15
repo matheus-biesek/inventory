@@ -29,6 +29,9 @@ public class SaleService {
         }
         Product productFound = productRepository.findByNameAndSizeAndWidth(saleSend.getProduct().getName(), saleSend.getProduct().getSize(), saleSend.getProduct().getWidth());
         Sale sale = new Sale(productFound, saleSend.getValue(), saleSend.getAmount(), saleSend.getObservation());
+        if (productFound.getAmount() < -sale.getAmount()){
+            return "Não é possível realizar está ação!\nO produto encontrado possui: " + productFound.getAmount() + " Un.\nVocê está vender: " + sale.getAmount() + " Un.\nOu seja:\nA quantidade do produto ficará negativa.";
+        }
         productFound.setAmount(productFound.getAmount() + saleSend.getAmount());
         productRepository.save(productFound);
         saleRepository.save(sale);

@@ -24,7 +24,7 @@ public class Expenditure {
     private BigDecimal value;
 
     @Column(nullable = false)
-    private int amount;
+    private double amount;
 
     @Column(length = 1000)
     private String observation;
