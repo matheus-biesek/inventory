@@ -1,16 +1,13 @@
 package com.closing.inventory.model.expenditure;
 
-import com.closing.inventory.model.father.Expenditure;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Table(name = "expenditure_opex")
 @Entity
@@ -18,24 +15,36 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExpenditureOpex extends Expenditure {
+public class ExpenditureOpex {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String size;
-
-    @Column(nullable = false)
     private String width;
 
-    public ExpenditureOpex(String name, String size, String width, BigDecimal value, String observation, double amount) {
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal value;
+
+    @Column(nullable = false)
+    private BigDecimal size;
+
+    @Column(length = 1000)
+    private String observation;
+
+    @Column(nullable = false)
+    private LocalDateTime localDateTime;
+
+    public ExpenditureOpex(String name, String width, BigDecimal valueConverted, BigDecimal sizeConverted, String observation) {
         this.name = name;
-        this.size = size;
         this.width = width;
-        setValue(value);
-        setObservation(observation);
-        setAmount(amount);
-        setLocalDateTime(LocalDateTime.now());
+        this.value = valueConverted;
+        this.size = sizeConverted;
+        this.observation = observation;
+        this.localDateTime = LocalDateTime.now();
     }
 }

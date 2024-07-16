@@ -1,5 +1,7 @@
 package com.closing.inventory.controller.rest.controller;
 
+import com.closing.inventory.dto.ProductRequestDTO;
+import com.closing.inventory.dto.SaleRequestDTO;
 import com.closing.inventory.model.product.Product;
 import com.closing.inventory.model.sale.Sale;
 import com.closing.inventory.service.product.ProductService;
@@ -24,13 +26,13 @@ public class SaleController {
     }
 
     @PostMapping("/create")
-    public @ResponseBody String create(@RequestBody Sale saleSend ) {
-        return saleService.create(saleSend);
+    public @ResponseBody String create(@RequestBody SaleRequestDTO body ) {
+        return saleService.create(body);
     }
 
     @PostMapping("/string-list-sale-of-product-send")
-    public @ResponseBody String stringListSaleOProductSend(@RequestBody Product productSend) {
-        return productService.stringListAllSale(productSend);
+    public @ResponseBody String stringListSaleOProductSend(@RequestBody ProductRequestDTO body) {
+        return productService.stringListAllSale(body);
     }
 
     @GetMapping("/string-list-all")

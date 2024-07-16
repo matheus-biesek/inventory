@@ -1,9 +1,4 @@
 import {
-    isInputValid,
-    getInputItem,
-} from '../utils/func-get-input.js';
-
-import {
     sendPostRequest,
     sendGetRequest
 } from '../utils/func-ipa.js';
@@ -18,10 +13,6 @@ function getSelectedExpenditureType() {
     return null;
 }
 
-function isValidValueAmount(expenditure) {
-    return !(expenditure.value < 0 || expenditure.amount < 0);
-}
-
 function stringListStockExpenditure() {
     sendGetRequest("/ipa-expenditure/string-list-stock", 'result-string-list-stock-expenditure');
 }
@@ -30,33 +21,43 @@ function createExpenditure() {
     document.getElementById("result-create-expenditure").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja criar uma nova despesa?")) {
         const expenditure = {
-            name: document.getElementById('txt-name-expenditure').value,
-            size: document.getElementById('txt-size-expenditure').value,
+            name: document.getElementById('txt-name-expenditure').value.replace(/\s+/g, '_'),
             width: document.getElementById('txt-width-expenditure').value,
-            value: parseFloat(document.getElementById('num-value-expenditure').value.replace(',', '.')),
+            value: document.getElementById('num-value-expenditure').value,
             observation: document.getElementById('txt-observation-expenditure').value,
-            amount: parseFloat(document.getElementById('num-quantity-expenditure').value.replace(',', '.'))
+            size: document.getElementById('num-quantity-expenditure').value
         };
-        if (isValidValueAmount(expenditure) && isInputValid(expenditure)) {
-            const type = getSelectedExpenditureType();
-            if (type === 'capex') {
-                sendPostRequest('/ipa-expenditure/create-capex', expenditure, 'result-create-expenditure');
-            } else if (type === 'opex') {
-                sendPostRequest('/ipa-expenditure/create-opex', expenditure, 'result-create-expenditure');
-            } else {
-                alert("Selecione o tipo de despesa!");
-            }
+        if (!expenditure.name  || !expenditure.width || !expenditure.value || !expenditure.size) {
+            alert("Todos os campos do produto são obrigatórios.");
+            return;
+        }
+        const value = parseFloat(expenditure.value);
+        const size = parseFloat(expenditure.size);
+        if (isNaN(value) || value <= 0 || isNaN(size) || size <= 0) {
+            alert("O valor e a quantidade devem ser maiores que zero.");
+            return;
+        }
+        const type = getSelectedExpenditureType();
+        if (type === 'capex') {
+            sendPostRequest('/ipa-expenditure/create-capex', expenditure, 'result-create-expenditure');
+        } else if (type === 'opex') {
+            sendPostRequest('/ipa-expenditure/create-opex', expenditure, 'result-create-expenditure');
         } else {
-            alert("Os valores inseridos são inválidos. Certifique-se de que não há valores negativos.");
+            alert("Selecione o tipo de despesa!");
         }
     }
 }
 
 function stringListOfExpenditureSend() {
-    const expenditure = getInputItem("txt-name-expenditure", "txt-size-expenditure", "txt-width-expenditure");
-    if (isInputValid(expenditure)) {
-        sendPostRequest("/ipa-expenditure/string-list-of-expenditure-send", expenditure, 'result-string-list-of-expenditure-send');
+    const expenditure = {
+        name: document.getElementById("txt-name-expenditure").value.replace(/\s+/g, '_'),
+        width: document.getElementById("txt-width-expenditure").value,
     }
+    if (!expenditure.name  || !expenditure.width) {
+        alert("Todos os campos do produto são obrigatórios.");
+        return;
+    }
+    sendPostRequest("/ipa-expenditure/string-list-of-expenditure-send", expenditure, 'result-string-list-of-expenditure-send');
 }
 
 function stringListAllExpenditure() {

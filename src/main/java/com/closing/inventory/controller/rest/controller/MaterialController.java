@@ -1,43 +1,42 @@
 package com.closing.inventory.controller.rest.controller;
 
-import com.closing.inventory.model.material.Material;
+import com.closing.inventory.dto.MaterialMovementsRequestDTO;
+import com.closing.inventory.dto.MaterialRequestDTO;
 import com.closing.inventory.service.material.MaterialMovementsService;
 import com.closing.inventory.service.material.MaterialService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ipa-material")
+@RequiredArgsConstructor
 public class MaterialController {
 
-    @Autowired
-    private MaterialService materialService;
-
-    @Autowired
-    private MaterialMovementsService materialMovementsService;
+    private final MaterialService materialService;
+    private final MaterialMovementsService materialMovementsService;
 
     @GetMapping("/string-list-stock")
     public @ResponseBody String stringListStock() {
-        return materialService.stringListStock();
+        return this.materialService.stringListStock();
     }
 
     @PostMapping("/create")
-    public @ResponseBody String create(@RequestBody Material materialSend) {
-        return materialService.create(materialSend);
+    public @ResponseBody String create(@RequestBody MaterialRequestDTO body) {
+        return this.materialService.create(body);
     }
 
     @PostMapping("/string-list-movements-of-material-send")
-    public @ResponseBody String stringListMovementsOfMaterialSend(@RequestBody Material materialSend) {
-        return materialService.stringListMovements(materialSend);
+    public @ResponseBody String stringListMovementsOfMaterialSend(@RequestBody MaterialRequestDTO body) {
+        return this.materialService.stringListMovements(body);
     }
 
-    @PostMapping("/append-quantity")
-    public @ResponseBody String appendQuantity(@RequestBody Material materialSend) {
-        return materialService.appendQuantity(materialSend);
+    @PostMapping("/remove-quantity")
+    public @ResponseBody String removeQuantity(@RequestBody MaterialMovementsRequestDTO body) {
+        return this.materialService.removeQuantity(body);
     }
 
     @GetMapping("/string-list-all-movements")
     public @ResponseBody String stringListAllMovements() {
-        return materialMovementsService.stringListAll();
+        return this.materialMovementsService.stringListAll();
     }
 }

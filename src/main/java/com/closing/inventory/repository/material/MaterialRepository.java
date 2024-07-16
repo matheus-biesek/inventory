@@ -6,8 +6,8 @@ import java.util.UUID;
 
 public interface MaterialRepository extends JpaRepository<Material, UUID> {
 
-    boolean existsByNameAndSizeAndWidth(String name, String size, String width);
+    boolean existsByNameAndWidth(String name, String width);
 
-    Material findByNameAndSizeAndWidth(String name, String size, String width);
+    Material findByNameAndWidth(String name, String width);
 
 }

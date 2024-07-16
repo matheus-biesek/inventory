@@ -1,43 +1,37 @@
 package com.closing.inventory.service.expenditure;
 
-import com.closing.inventory.model.expenditure.ExpenditureSend;
+import com.closing.inventory.dto.ExpenditureRequestDTO;
 import com.closing.inventory.model.material.Material;
 import com.closing.inventory.repository.expenditure.ExpenditureOpexRepository;
 import com.closing.inventory.repository.material.MaterialRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ExpenditureService {
 
-    @Autowired
-    private MaterialRepository materialRepository;
+    private final MaterialRepository materialRepository;
+    private final ExpenditureOpexRepository expenditureOpexRepository;
+    private final ExpenditureCapexService expenditureCapexService;
+    private final ExpenditureOpexService expenditureOpexService;
 
-    @Autowired
-    private ExpenditureOpexRepository expenditureOpexRepository;
-
-    @Autowired
-    private ExpenditureCapexService expenditureCapexService;
-
-    @Autowired
-    private ExpenditureOpexService expenditureOpexService;
-
-    public String stringList(ExpenditureSend expenditureSend) {
-        if (materialRepository.existsByNameAndSizeAndWidth(expenditureSend.getName(), expenditureSend.getSize(), expenditureSend.getWidth())) {
-            Material materialFound = materialRepository.findByNameAndSizeAndWidth(expenditureSend.getName(), expenditureSend.getSize(), expenditureSend.getWidth());
-             return expenditureCapexService.stringListMaterial(materialFound);
+    public String stringList(ExpenditureRequestDTO body) {
+        if (this.materialRepository.existsByNameAndWidth(body.name(), body.width())) {
+             Material materialFound = this.materialRepository.findByNameAndWidth(body.name(), body.width());
+             return this.expenditureCapexService.stringListMaterial(materialFound);
         }
-        if(expenditureOpexRepository.existsByNameAndSizeAndWidth(expenditureSend.getName(), expenditureSend.getSize(), expenditureSend.getWidth())){
-            return expenditureOpexService.stringListOpex(expenditureSend);
+        if(this.expenditureOpexRepository.existsByNameAndWidth(body.name(), body.width())){
+            return this.expenditureOpexService.stringListOpex(body);
         }
         return "Despesa do tipo opex não existe no banco de dados!";
     }
 
     public String stringListAll() {
-        return expenditureOpexService.stringListAll() + "\n" + expenditureCapexService.stringListAll();
+        return this.expenditureOpexService.stringListAll() + "\n" + this.expenditureCapexService.stringListAll();
     }
 
     public String stringListStock() {
-        return  expenditureOpexService.stringListNonRepeatingEntity()+ "\n" + expenditureCapexService.stringListNonRepeatingEntity();
+        return  this.expenditureOpexService.stringListNonRepeatingEntity()+ "\n" + this.expenditureCapexService.stringListNonRepeatingEntity();
     }
 }

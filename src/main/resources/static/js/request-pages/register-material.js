@@ -1,24 +1,7 @@
 import {
-    isInputValid,
-    getInputItem
-} from '../utils/func-get-input.js';
-
-import {
     sendPostRequest,
     sendGetRequest,
 } from '../utils/func-ipa.js';
-
-function isValidInputMaterial(movementsRequest) {
-    if (!movementsRequest.name || !movementsRequest.size || !movementsRequest.width) {
-        alert("Todos os campos do material são obrigatórios.");
-        return false;
-    }
-    if (isNaN(movementsRequest.amount) || movementsRequest.amount <= 0) {
-        alert("A quantidade deve ser um número positivo.");
-        return false;
-    }
-    return true;
-}
 
 function stringListStockMaterial(){
     sendGetRequest('/ipa-material/string-list-stock', 'result-string-list-stock-material');
@@ -27,33 +10,48 @@ function stringListStockMaterial(){
 function createMaterial() {
     document.getElementById("result-create-material").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja criar um novo material?")) {
-        const material = getInputItem("txt-name-material", "txt-size-material", "txt-width-material");
-        if (isInputValid(material)) {
-            sendPostRequest('/ipa-material/create', material, 'result-create-material');
+        const material = {
+            name: document.getElementById("txt-name-material").value.replace(/\s+/g, '_'),
+            width: document.getElementById("txt-width-material").value
         }
+        if (!material.name || !material.width) {
+            alert("Todos os campos do material são obrigatórios.");
+            return;
+        }
+        sendPostRequest('/ipa-material/create', material, 'result-create-material');
     }
 }
 
 function stringListMovementsOfMaterialSend() {
-    const material = getInputItem("txt-name-material", "txt-size-material", "txt-width-material");
-    if (isInputValid(material)) {
-        sendPostRequest('/ipa-material/string-list-movements-of-material-send', material, 'result-string-list-movements-of-material-send');
+    const material = {
+        name: document.getElementById("txt-name-material").value.replace(/\s+/g, '_'),
+        width: document.getElementById("txt-width-material").value
     }
+    if (!material.name || !material.width) {
+        alert("Todos os campos do material são obrigatórios.");
+        return;
+    }
+    sendPostRequest('/ipa-material/string-list-movements-of-material-send', material, 'result-string-list-movements-of-material-send');
 }
-//Remove quantity
-function appendQuantityMaterial() {
+
+function removeQuantityMaterial() {
     document.getElementById("result-append-quantity-material").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja remover a quantidade do material?")) {
         const movementsRequest = {
-            name: document.getElementById("txt-name-material").value,
-            size: document.getElementById("txt-size-material").value,
+            name: document.getElementById("txt-name-material").value.replace(/\s+/g, '_'),
             width: document.getElementById("txt-width-material").value,
-            amount: parseFloat(document.getElementById("num-remove-quantity-material").value.replace(',', '.'))
+            quantity: document.getElementById("num-remove-quantity-material").value
         };
-        console.log(movementsRequest.amount);
-        if (isValidInputMaterial(movementsRequest)) {
-            sendPostRequest('/ipa-material/append-quantity', movementsRequest, 'result-append-quantity-material');
+        if (!movementsRequest.name || !movementsRequest.width || !movementsRequest.quantity) {
+            alert("Todos os campos do material são obrigatórios.");
+            return;
         }
+        const quantity = parseFloat(movementsRequest.quantity);
+        if (isNaN(quantity) || quantity <= 0) {
+            alert("A quantidade deve ser maior que zero.");
+            return;
+        }
+        sendPostRequest('/ipa-material/remove-quantity', movementsRequest, 'result-append-quantity-material');
     }
 }
 
@@ -64,5 +62,5 @@ function stringListAllMaterialMovements(){
 window.stringListStockMaterial = stringListStockMaterial;
 window.createMaterial = createMaterial;
 window.stringListMovementsOfMaterialSend = stringListMovementsOfMaterialSend;
-window.appendQuantityMaterial = appendQuantityMaterial;
+window.removeQuantityMaterial = removeQuantityMaterial;
 window.stringListAllMaterialMovements = stringListAllMaterialMovements;

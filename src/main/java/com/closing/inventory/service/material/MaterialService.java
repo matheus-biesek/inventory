@@ -1,91 +1,62 @@
 package com.closing.inventory.service.material;
 
+import com.closing.inventory.dto.MaterialMovementsRequestDTO;
+import com.closing.inventory.dto.MaterialRequestDTO;
 import com.closing.inventory.model.material.Material;
 import com.closing.inventory.model.material.MaterialMovements;
 import com.closing.inventory.repository.material.MaterialRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MaterialService {
 
-    @Autowired
-    private MaterialRepository materialRepository;
-
-    @Autowired
-    private MaterialMovementsService materialMovementsService;
+    private final MaterialRepository materialRepository;
+    private final MaterialMovementsService materialMovementsService;
 
     public String stringListStock() {
-        List<Material> listMaterials = materialRepository.findAll();
-        if (listMaterials.isEmpty()) {
-            return "Não há materiais no estoque!";
-        }
-
-        // Instância de DecimalFormat para formatar os números com duas casas decimais
-        DecimalFormat df = new DecimalFormat("#.##");
-
+        List<Material> listMaterials = this.materialRepository.findAll();
+        if (listMaterials.isEmpty()) return "Não há materiais no estoque!";
         return listMaterials.stream()
                 .sorted(Comparator.comparing(Material::getName))
-                .map(mat -> "Material: " + mat.getName() +
-                        ", Tamanho: " + mat.getSize() + " Cm, " +
-                        "Largura: " + mat.getWidth() + " Mm\n" +
-                        "Qtd Atual: " + df.format(mat.getAmount()) + " Un\n" +
-                        "-----------------------------------")
+                .map(mat -> "Material: " + mat.getName() + ", Largura: " + mat.getWidth() + " Mm\n" + "Tamanho atual: " + mat.getSize() + " Un\n" + "-----------------------------------")
                 .collect(Collectors.joining("\n"));
     }
 
-    public String create(Material materialSend) {
-        if (materialRepository.existsByNameAndSizeAndWidth(materialSend.getName(), materialSend.getSize(), materialSend.getWidth())) {
-            return "O material já existe no banco de dados!";
-        }
-        materialRepository.save(materialSend);
-        materialMovementsService.registerMovements(materialSend, 0);
+    public String create(MaterialRequestDTO body) {
+        if (this.materialRepository.existsByNameAndWidth(body.name(), body.width())) return "O material já existe no banco de dados!";
+        Material material = new Material(body.name(), body.width());
+        this.materialRepository.save(material);
+        this.materialMovementsService.registerMovements(material, BigDecimal.ZERO);
         return "Material adicionado com sucesso";
     }
 
-    public String stringListMovements(Material material) {
-        Material materialFound = materialRepository.findByNameAndSizeAndWidth(material.getName(), material.getSize(), material.getWidth());
-        if (materialFound == null) {
-            return "O material encontrado está nulo no banco de dados!";
-        }
-
-        // Instância de DecimalFormat para formatar os números com duas casas decimais
-        DecimalFormat df = new DecimalFormat("#.##");
-
-        List<MaterialMovements> movements = materialMovementsService.findListMaterial(materialFound);
+    public String stringListMovements(MaterialRequestDTO body) {
+        Material materialFound = this.materialRepository.findByNameAndWidth(body.name(), body.width());
+        if (materialFound == null) return "O material não existe no banco de dados!";
+        List<MaterialMovements> movements = this.materialMovementsService.findListMaterial(materialFound);
         String movementsString = movements.stream()
                 .sorted(Comparator.comparing(MaterialMovements::getLocalDateTime).reversed())
-                .map(mov -> "-----------------------------------\nData: " + mov.getLocalDateTime() + " - Qtd: " + df.format(mov.getMovementsAmount()))
+                .map(mov -> "-----------------------------------\nData: " + mov.getLocalDateTime() + " - Qtd: " + mov.getSize())
                 .collect(Collectors.joining("\n"));
-
-        return "Material: " + materialFound.getName() +
-                ", Tamanho: " + materialFound.getSize() + " Cm, " +
-                "Largura: " + materialFound.getWidth() + " Mm\n" +
-                "Qtd atual: " + df.format(materialFound.getAmount()) + " Un\n" +
-                "Histórico de movimentações:\n" + movementsString;
+        return "Material: " + materialFound.getName() + ", Largura: " + materialFound.getWidth() + " Mm\n" + "Tamanho atual: " + materialFound.getSize() + " M\n" + "Histórico de movimentações:\n" + movementsString;
     }
 
-    //remove quantity
-    public String appendQuantity(Material materialSend) {
-        Material materialFound = materialRepository.findByNameAndSizeAndWidth(materialSend.getName(), materialSend.getSize(), materialSend.getWidth());
-        if (materialFound == null) {
-            return "O material encontrado está nulo no banco de dados!";
+    public String removeQuantity(MaterialMovementsRequestDTO body) {
+        Material materialFound = this.materialRepository.findByNameAndWidth(body.name(), body.width());
+        if (materialFound == null) return "O material não existe no banco de dados!";
+        BigDecimal quantityConverted = new BigDecimal(body.quantity().replace(",", "."));
+        if (materialFound.getSize().compareTo(quantityConverted) < 0) {
+            return "Não é possível realizar esta ação!\nO material encontrado possui: " + materialFound.getSize() + " Un.\nVocê está querendo tirar: " + quantityConverted + " Un.\nOu seja:\nA quantidade do material ficará negativa.";
         }
-        if (materialSend.getAmount() < 0) {
-            return "A quantidade a ser removida não pode ser negativa.";
-        }
-        if (materialFound.getAmount() < materialSend.getAmount()) {
-            return "Não é possível realizar esta ação!\nO material encontrado possui: " + materialFound.getAmount() + " Un.\nVocê está querendo tirar: " + materialSend.getAmount() + " Un.\nOu seja:\nA quantidade do material ficará negativa.";
-        }
-        materialFound.setAmount(materialFound.getAmount() - materialSend.getAmount());
-        materialRepository.save(materialFound);
-        materialMovementsService.registerMovements(materialFound, -materialSend.getAmount());
+        materialFound.setSize(materialFound.getSize().subtract(quantityConverted));
+        this.materialRepository.save(materialFound);
+        this.materialMovementsService.registerMovements(materialFound, quantityConverted.negate());
         return "Movimentação concluída com sucesso!";
     }
-
 }

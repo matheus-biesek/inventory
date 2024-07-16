@@ -38,12 +38,11 @@ public class Sale {
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public Sale(Product productFound, BigDecimal value, int amount, String observation) {
-        this.product = productFound;
+    public Sale(Product product, BigDecimal value, int amount, String observation) {
+        this.product = product;
         this.value = value;
         this.amount = amount;
         this.observation = observation;
         this.localDateTime = LocalDateTime.now();
     }
-
 }

@@ -1,44 +1,42 @@
 package com.closing.inventory.controller.rest.controller;
 
-import com.closing.inventory.model.product.Product;
+import com.closing.inventory.dto.ProductMovementsRequestDTO;
+import com.closing.inventory.dto.ProductRequestDTO;
 import com.closing.inventory.service.product.ProductMovementsService;
 import com.closing.inventory.service.product.ProductService;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ipa-product")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private ProductMovementsService productMovementsService;
+    private final ProductService productService;
+    private final ProductMovementsService productMovementsService;
 
     @GetMapping("/string-list-stock")
     public @ResponseBody String stringListStock() {
-        return productService.stringListStock();
+        return this.productService.stringListStock();
     }
 
     @PostMapping("/create")
-    public @ResponseBody String create(@RequestBody Product productSend) {
-        return productService.create(productSend);
+    public @ResponseBody String create(@RequestBody ProductRequestDTO body) {
+        return this.productService.create(body);
     }
 
     @PostMapping("/string-list-movements-of-product-send")
-    public @ResponseBody String stringListMovementsOfProductSend(@RequestBody Product productSend) {
-        return productService.stringListMovements(productSend);
+    public @ResponseBody String stringListMovementsOfProductSend(@RequestBody ProductRequestDTO body) {
+        return this.productService.stringListMovements(body);
     }
 
-    @PostMapping("/append-quantity")
-    public @ResponseBody String appendQuantity(@RequestBody Product productSend) {
-        return productService.appendQuantity(productSend);
+    @PostMapping("/add-quantity")
+    public @ResponseBody String addQuantity(@RequestBody ProductMovementsRequestDTO body) {
+        return this.productService.addQuantity(body);
     }
 
     @GetMapping("/string-list-all-movements")
     public @ResponseBody String stringListAllMovements() {
-        return productMovementsService.stringListAll();
+        return this.productMovementsService.stringListAll();
     }
 }

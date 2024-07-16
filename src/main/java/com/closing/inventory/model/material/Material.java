@@ -1,18 +1,14 @@
 package com.closing.inventory.model.material;
 
-import com.closing.inventory.model.father.InventoryItems;
 import com.closing.inventory.model.expenditure.ExpenditureCapex;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "material")
 @Entity
@@ -20,7 +16,20 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Material extends InventoryItems {
+public class Material {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String width;
+
+    @Column(nullable = false)
+    private BigDecimal size;
 
     @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
     private List<MaterialMovements> materialMovements;
@@ -28,12 +37,9 @@ public class Material extends InventoryItems {
     @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
     private List<ExpenditureCapex> listMaterialExpenditureCapex;
 
-    public Material(String name, String size, String width, int amount) {
-        setName(name);
-        setSize(size);
-        setWidth(width);
-        setAmount(amount);
-        this.materialMovements = Collections.emptyList();
+    public Material(String name, String width) {
+        this.name = name;
+        this.width = width;
+        this.size = BigDecimal.ZERO;
     }
-
 }

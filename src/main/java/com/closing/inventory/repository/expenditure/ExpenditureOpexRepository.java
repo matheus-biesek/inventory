@@ -10,16 +10,16 @@ import java.util.UUID;
 
 public interface ExpenditureOpexRepository extends JpaRepository<ExpenditureOpex, UUID> {
 
-    List<ExpenditureOpex> findByNameAndSizeAndWidth(String name, String size, String width);
+    List<ExpenditureOpex> findByNameAndWidth(String name, String width);
 
-    boolean existsByNameAndSizeAndWidth(String name, String size, String width);
+    boolean existsByNameAndWidth(String name, String width);
 
     List<ExpenditureOpex> findAllByLocalDateTimeBetween(LocalDateTime from, LocalDateTime to);
 
     @Query("SELECT e FROM ExpenditureOpex e " +
             "WHERE e.id IN ( " +
             "    SELECT MIN(e2.id) FROM ExpenditureOpex e2 " +
-            "    GROUP BY e2.name, e2.size, e2.width " +
+            "    GROUP BY e2.name, e2.width " +
             ")")
     List<ExpenditureOpex> findAllNonRepeatingEntities();
 }

@@ -1,10 +1,4 @@
 import {
-    isInputValid,
-    getInputItem,
-    getInputAddQuantityItem,
-} from '../utils/func-get-input.js';
-
-import {
     sendPostRequest,
     sendGetRequest,
 } from '../utils/func-ipa.js';
@@ -16,27 +10,50 @@ function stringListStockProduct(){
 function createProduct() {
     document.getElementById("result-create-product").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja adicionar um novo produto no banco de dados?")) {
-        const product = getInputItem("txt-name-product", "txt-size-product", "txt-width-product");
-        if (isInputValid(product)) {
-            sendPostRequest('/ipa-product/create', product, 'result-create-product');
+        const product = {
+            name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
+            size: document.getElementById("txt-size-product").value,
+            width: document.getElementById("txt-width-product").value,
         }
+        if (!product.name || !product.size || !product.width) {
+            alert("Todos os campos do material são obrigatórios.");
+            return;
+        }
+        sendPostRequest('/ipa-product/create', product, 'result-create-product');
     }
 }
 
 function stringListMovementsOfProductSend() {
-    const product = getInputItem("txt-name-product", "txt-size-product", "txt-width-product");
-    if (isInputValid(product)) {
-        sendPostRequest('/ipa-product/string-list-movements-of-product-send', product, 'result-string-list-movements-of-product-send');
+    const product = {
+        name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
+        size: document.getElementById("txt-size-product").value,
+        width: document.getElementById("txt-width-product").value,
     }
+    if (!product.name || !product.size || !product.width) {
+        alert("Todos os campos do material são obrigatórios.");
+        return;
+    }
+    sendPostRequest('/ipa-product/string-list-movements-of-product-send', product, 'result-string-list-movements-of-product-send');
 }
 
 function addQuantityProduct() {
     document.getElementById("result-add-quantity-product").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja adicionar uma nova quantidade no produto?")) {
-        const moveRequest = getInputAddQuantityItem("txt-name-product", "txt-size-product", "txt-width-product", "num-add-quantity-product");
-        if (isInputValid(moveRequest, false, true)) {
-            sendPostRequest('/ipa-product/append-quantity', moveRequest, 'result-add-quantity-product');
+        const moveRequest = {
+            name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
+            width: document.getElementById("txt-width-product").value,
+            size: document.getElementById("txt-size-product").value,
+            amount: parseInt(document.getElementById("num-add-quantity-product").value, 10)
         }
+        if (!moveRequest.name || !moveRequest.size || !moveRequest.width || !moveRequest.amount) {
+            alert("Todos os campos do material são obrigatórios.");
+            return;
+        }
+        if (isNaN(moveRequest.amount) || moveRequest.amount <= 0) {
+            alert("O valor deve ser maior que zero.");
+            return;
+        }
+        sendPostRequest('/ipa-product/add-quantity', moveRequest, 'result-add-quantity-product');
     }
 }
 

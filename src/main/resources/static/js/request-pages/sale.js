@@ -1,45 +1,29 @@
 import {
-    isInputValid,
-    getInputItem
-} from '../utils/func-get-input.js';
-
-import {
     sendPostRequest,
     sendGetRequest
 } from '../utils/func-ipa.js';
-
-function isInputValidSale(sale) {
-    if (!sale.product.name || !sale.product.size || !sale.product.width) {
-        alert("Todos os campos do produto são obrigatórios.");
-        return false;
-    }
-    if (isNaN(sale.value) || sale.value <= 0) {
-        alert("O valor da venda deve ser um número positivo.");
-        return false;
-    }
-    if (isNaN(sale.amount) || sale.amount >= 0) {
-        alert("Mude o sinal da quantidade.");
-        return false;
-    }
-    return true;
-}
 
 function createSale() {
     document.getElementById("result-create-sale").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja cria uma nova venda?")) {
         const sale = {
-            product: {
-                name: document.getElementById('txt-name-product').value,
-                size: document.getElementById('txt-size-product').value,
-                width: document.getElementById('txt-width-product').value
-            },
-            value: parseFloat(document.getElementById('num-value-sale').value),
-            amount: -parseFloat(document.getElementById('num-quantity-sale').value.replace(',', '.')),
+            name: document.getElementById('txt-name-product').value.replace(/\s+/g, '_'),
+            size: document.getElementById('txt-size-product').value,
+            width: document.getElementById('txt-width-product').value,
+            value: document.getElementById('num-value-sale').value,
+            amount: parseInt(document.getElementById('num-quantity-sale').value, 10),
             observation: document.getElementById('txt-observation').value
         };
-        if (isInputValidSale(sale)) {
-            sendPostRequest('/ipa-sale/create', sale, 'result-create-sale');
+        if (!sale.name || !sale.size || !sale.width || !sale.amount || !sale.value) {
+            alert("Todos os campos do produto são obrigatórios.");
+            return;
         }
+        const value = parseFloat(sale.value);
+        if (isNaN(value) || value <= 0 || isNaN(sale.amount || sale.amount <= 0)) {
+            alert("O valor deve ser maior que zero.");
+            return;
+        }
+        sendPostRequest('/ipa-sale/create', sale, 'result-create-sale');
     }
 }
 
@@ -48,10 +32,16 @@ function stringListStockSale() {
 }
 
 function stringListSaleOfProductSend() {
-    const product = getInputItem("txt-name-product", "txt-size-product", "txt-width-product");
-    if(isInputValid(product)){
-        sendPostRequest("/ipa-sale/string-list-sale-of-product-send", product, "result-string-list-sale-of-product-send");
+    const product = {
+        name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
+        width: document.getElementById("txt-width-product").value,
+        size: document.getElementById("txt-size-product").value,
     }
+    if (!product.name || !product.size || !product.width) {
+        alert("Todos os campos do material são obrigatórios.");
+        return;
+    }
+    sendPostRequest("/ipa-sale/string-list-sale-of-product-send", product, "result-string-list-sale-of-product-send");
 }
 
 function stringListAllSale() {

@@ -2,7 +2,7 @@ package com.closing.inventory.controller.rest.controller;
 
 import com.closing.inventory.dto.LoginRequestDTO;
 import com.closing.inventory.dto.RegisterRequestDTO;
-import com.closing.inventory.dto.ResponseDTO;
+import com.closing.inventory.dto.TokenResponseDTO;
 import com.closing.inventory.dto.TokenRequestDTO;
 import com.closing.inventory.infra.security.TokenService;
 import com.closing.inventory.model.user.User;
@@ -30,7 +30,7 @@ public class AuthController {
         User user = this.userRepository.findByUsername(body.username()).orElseThrow(() -> new RuntimeException("User not found"));
         if(passwordEncoder.matches(body.password(), user.getPassword())){
             String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(token));
+            return ResponseEntity.ok(new TokenResponseDTO(token));
         }
         return ResponseEntity.badRequest().build();
     }
@@ -44,7 +44,7 @@ public class AuthController {
             newUser.setUsername(body.username());
             this.userRepository.save(newUser);
             String token = this.tokenService.generateToken(newUser);
-            return ResponseEntity.ok(new ResponseDTO(token));
+            return ResponseEntity.ok(new TokenResponseDTO(token));
         }
         return ResponseEntity.badRequest().build();
     }

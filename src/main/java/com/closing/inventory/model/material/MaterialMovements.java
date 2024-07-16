@@ -1,13 +1,14 @@
 package com.closing.inventory.model.material;
 
-import com.closing.inventory.model.father.MovementsHistoric;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Table(name = "material_movements")
 @Entity
@@ -15,15 +16,25 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MaterialMovements extends MovementsHistoric {
+public class MaterialMovements{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @ManyToOne
     @JoinColumn(name = "material_uuid", nullable = false)
     private Material material;
 
-    public MaterialMovements(Material material, LocalDateTime localDateTime, double movementsAmount) {
-        super(localDateTime, movementsAmount);
-        this.material = material;
-    }
+    @Column(nullable = false)
+    private BigDecimal size;
 
+    @Column(nullable = false)
+    private LocalDateTime localDateTime;
+
+    public MaterialMovements(Material material, BigDecimal quantity) {
+        this.material = material;
+        this.size = quantity;
+        this.localDateTime = LocalDateTime.now();
+    }
 }
