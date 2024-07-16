@@ -25,7 +25,8 @@ function createExpenditure() {
             width: document.getElementById('txt-width-expenditure').value,
             value: document.getElementById('num-value-expenditure').value,
             observation: document.getElementById('txt-observation-expenditure').value,
-            size: document.getElementById('num-quantity-expenditure').value
+            size: document.getElementById('num-quantity-expenditure').value,
+            token: sessionStorage.getItem('token'),
         };
         if (!expenditure.name  || !expenditure.width || !expenditure.value || !expenditure.size) {
             alert("Todos os campos do produto são obrigatórios.");
@@ -34,7 +35,7 @@ function createExpenditure() {
         const value = parseFloat(expenditure.value);
         const size = parseFloat(expenditure.size);
         if (isNaN(value) || value <= 0 || isNaN(size) || size <= 0) {
-            alert("O valor e a quantidade devem ser maiores que zero.");
+            alert("Digite valores positivos.");
             return;
         }
         const type = getSelectedExpenditureType();

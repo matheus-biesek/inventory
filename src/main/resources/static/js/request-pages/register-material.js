@@ -12,7 +12,8 @@ function createMaterial() {
     if (window.confirm("Você tem certeza que deseja criar um novo material?")) {
         const material = {
             name: document.getElementById("txt-name-material").value.replace(/\s+/g, '_'),
-            width: document.getElementById("txt-width-material").value
+            width: document.getElementById("txt-width-material").value,
+            token: sessionStorage.getItem('token')
         }
         if (!material.name || !material.width) {
             alert("Todos os campos do material são obrigatórios.");
@@ -40,7 +41,8 @@ function removeQuantityMaterial() {
         const movementsRequest = {
             name: document.getElementById("txt-name-material").value.replace(/\s+/g, '_'),
             width: document.getElementById("txt-width-material").value,
-            quantity: document.getElementById("num-remove-quantity-material").value
+            quantity: document.getElementById("num-remove-quantity-material").value,
+            token: sessionStorage.getItem('token')
         };
         if (!movementsRequest.name || !movementsRequest.width || !movementsRequest.quantity) {
             alert("Todos os campos do material são obrigatórios.");
@@ -48,7 +50,7 @@ function removeQuantityMaterial() {
         }
         const quantity = parseFloat(movementsRequest.quantity);
         if (isNaN(quantity) || quantity <= 0) {
-            alert("A quantidade deve ser maior que zero.");
+            alert("Digite valores positivos.");
             return;
         }
         sendPostRequest('/ipa-material/remove-quantity', movementsRequest, 'result-append-quantity-material');

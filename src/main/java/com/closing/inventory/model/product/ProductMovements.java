@@ -1,5 +1,6 @@
 package com.closing.inventory.model.product;
 
+import com.closing.inventory.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,9 +31,14 @@ public class ProductMovements {
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public ProductMovements(Product product, int amount, LocalDateTime localDateTime) {
+    @ManyToOne
+    @JoinColumn(name = "user_uuid", nullable = false)
+    private User user;
+
+    public ProductMovements(Product product, int amount, LocalDateTime localDateTime, User user) {
         this.product = product;
         this.amount = amount;
         this.localDateTime = localDateTime;
+        this.user = user;
     }
 }

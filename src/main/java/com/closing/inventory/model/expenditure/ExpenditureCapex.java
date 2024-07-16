@@ -1,6 +1,7 @@
 package com.closing.inventory.model.expenditure;
 
 import com.closing.inventory.model.material.Material;
+import com.closing.inventory.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,11 +39,17 @@ public class ExpenditureCapex {
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public ExpenditureCapex(Material material, BigDecimal valueConverted, BigDecimal sizeConverted, String observation) {
+    @ManyToOne
+    @JoinColumn(name = "user_uuid", nullable = false)
+    private User user;
+
+
+    public ExpenditureCapex(Material material, BigDecimal valueConverted, BigDecimal sizeConverted, String observation, User user) {
         this.material = material;
         this.value = valueConverted;
         this.size = sizeConverted;
         this.observation = observation;
         this.localDateTime = LocalDateTime.now();
+        this.user = user;
     }
 }

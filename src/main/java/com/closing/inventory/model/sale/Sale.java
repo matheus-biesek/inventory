@@ -1,6 +1,7 @@
 package com.closing.inventory.model.sale;
 
 import com.closing.inventory.model.product.Product;
+import com.closing.inventory.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,11 +39,16 @@ public class Sale {
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public Sale(Product product, BigDecimal value, int amount, String observation) {
+    @ManyToOne
+    @JoinColumn(name = "user_uuid", nullable = false)
+    private User user;
+
+    public Sale(Product product, BigDecimal value, int amount, String observation, User user ) {
         this.product = product;
         this.value = value;
         this.amount = amount;
         this.observation = observation;
         this.localDateTime = LocalDateTime.now();
+        this.user = user;
     }
 }

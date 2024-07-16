@@ -1,5 +1,6 @@
 package com.closing.inventory.model.expenditure;
 
+import com.closing.inventory.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,12 +40,17 @@ public class ExpenditureOpex {
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public ExpenditureOpex(String name, String width, BigDecimal valueConverted, BigDecimal sizeConverted, String observation) {
+    @ManyToOne
+    @JoinColumn(name = "user_uuid", nullable = false)
+    private User user;
+
+    public ExpenditureOpex(String name, String width, BigDecimal valueConverted, BigDecimal sizeConverted, String observation, User user) {
         this.name = name;
         this.width = width;
         this.value = valueConverted;
         this.size = sizeConverted;
         this.observation = observation;
         this.localDateTime = LocalDateTime.now();
+        this.user = user;
     }
 }

@@ -12,15 +12,17 @@ function createSale() {
             width: document.getElementById('txt-width-product').value,
             value: document.getElementById('num-value-sale').value,
             amount: parseInt(document.getElementById('num-quantity-sale').value, 10),
-            observation: document.getElementById('txt-observation').value
+            observation: document.getElementById('txt-observation').value,
+            token: sessionStorage.getItem('token')
         };
         if (!sale.name || !sale.size || !sale.width || !sale.amount || !sale.value) {
             alert("Todos os campos do produto são obrigatórios.");
             return;
         }
         const value = parseFloat(sale.value);
-        if (isNaN(value) || value <= 0 || isNaN(sale.amount || sale.amount <= 0)) {
-            alert("O valor deve ser maior que zero.");
+        const amount = sale.amount;
+        if (isNaN(value) || value <= 0 || isNaN(amount) || amount <= 0) {
+            alert("Digite valores positivos.");
             return;
         }
         sendPostRequest('/ipa-sale/create', sale, 'result-create-sale');

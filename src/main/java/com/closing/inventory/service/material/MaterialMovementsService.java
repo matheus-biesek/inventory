@@ -2,36 +2,35 @@ package com.closing.inventory.service.material;
 
 import com.closing.inventory.model.material.Material;
 import com.closing.inventory.model.material.MaterialMovements;
+import com.closing.inventory.model.user.User;
 import com.closing.inventory.repository.material.MaterialMovementsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MaterialMovementsService {
 
-    @Autowired
-    MaterialMovementsRepository materialMovementsRepository;
+    private final MaterialMovementsRepository materialMovementsRepository;
 
-    public void registerMovements(Material material, BigDecimal quantity){
-        MaterialMovements materialMovements = new MaterialMovements(material, quantity);
-        materialMovementsRepository.save(materialMovements);
+    public void registerMovements(Material material, BigDecimal quantity, User user){
+        MaterialMovements materialMovements = new MaterialMovements(material, quantity, user);
+        this.materialMovementsRepository.save(materialMovements);
     }
 
     public List<MaterialMovements> findListMaterial(Material material) {
-        return materialMovementsRepository.findByMaterial(material);
+        return this.materialMovementsRepository.findByMaterial(material);
     }
 
     public String stringListAll(){
-        List<MaterialMovements> materialMovements = materialMovementsRepository.findAll();
+        List<MaterialMovements> materialMovements = this.materialMovementsRepository.findAll();
         return materialMovements.stream()
                 .sorted(Comparator.comparing(MaterialMovements::getLocalDateTime).reversed())
-                .map(mov ->  "Material: " + mov.getMaterial().getName() + " Tamanho: " + mov.getMaterial().getSize() + " Cm, Largura: " + mov.getMaterial().getWidth() + "Mm\nMovimentação: " + mov.getSize() + "\nData: " + mov.getLocalDateTime() + "\n-----------------------------------")
+                .map(mov ->  "Material: " + mov.getMaterial().getName() + ", Largura: " + mov.getMaterial().getWidth() + "Mm\nMovimentação: " + mov.getSize() + "\nData: " + mov.getLocalDateTime() + "\nUsúario: " + mov.getUser().getUsername() + "\n-----------------------------------")
                 .collect(Collectors.joining("\n"));
     }
 }

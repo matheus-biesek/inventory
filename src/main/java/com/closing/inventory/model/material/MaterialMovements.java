@@ -1,5 +1,6 @@
 package com.closing.inventory.model.material;
 
+import com.closing.inventory.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +33,14 @@ public class MaterialMovements{
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public MaterialMovements(Material material, BigDecimal quantity) {
+    @ManyToOne
+    @JoinColumn(name = "user_uuid", nullable = false)
+    private User user;
+
+    public MaterialMovements(Material material, BigDecimal quantity, User user) {
         this.material = material;
         this.size = quantity;
         this.localDateTime = LocalDateTime.now();
+        this.user = user;
     }
 }

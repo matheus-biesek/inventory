@@ -14,6 +14,7 @@ function createProduct() {
             name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
             size: document.getElementById("txt-size-product").value,
             width: document.getElementById("txt-width-product").value,
+            token: sessionStorage.getItem('token'),
         }
         if (!product.name || !product.size || !product.width) {
             alert("Todos os campos do material são obrigatórios.");
@@ -43,14 +44,16 @@ function addQuantityProduct() {
             name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
             width: document.getElementById("txt-width-product").value,
             size: document.getElementById("txt-size-product").value,
-            amount: parseInt(document.getElementById("num-add-quantity-product").value, 10)
+            amount: parseInt(document.getElementById("num-add-quantity-product").value, 10),
+            token: sessionStorage.getItem('token'),
         }
         if (!moveRequest.name || !moveRequest.size || !moveRequest.width || !moveRequest.amount) {
             alert("Todos os campos do material são obrigatórios.");
             return;
         }
-        if (isNaN(moveRequest.amount) || moveRequest.amount <= 0) {
-            alert("O valor deve ser maior que zero.");
+        const amount = moveRequest.amount;
+        if (isNaN(amount) || amount <= 0) {
+            alert("Digite valores positivos.");
             return;
         }
         sendPostRequest('/ipa-product/add-quantity', moveRequest, 'result-add-quantity-product');
