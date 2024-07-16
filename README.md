@@ -1,18 +1,18 @@
 Tecnologias Utilizadas
 
 Backend:
-    Spring Boot
-    Spring Web
-    Spring Data JPA
-    Spring Security
-    JWT (JSON Web Tokens)
-    PostgreSQL
-    Lombok
+Spring Boot
+Spring Web
+Spring Data JPA
+Spring Security
+JWT (JSON Web Tokens)
+PostgreSQL
+Lombok
 
 Frontend:
-    HTML
-    CSS
-    JavaScript
+HTML
+CSS
+JavaScript
 
 Descrição do Projeto
 
@@ -26,16 +26,16 @@ Banco de Dados: Utiliza PostgreSQL para armazenamento e gerenciamento de dados.
 Funcionalidades
 
 Gerenciamento de Estoque:
-    Adicionar novos itens ao estoque
-    Atualizar informações de itens existentes
-    Remover itens do estoque
+Adicionar novos itens ao estoque
+Atualizar informações de itens existentes
+Remover itens do estoque
 
 Análise Gráfica:
-    Visualização de dados de estoque em gráficos interativos
+Visualização de dados de estoque em gráficos.
 
 Autenticação e Autorização:
-    Utilização de JWT para autenticação de usuários
-    Controle de acesso a funcionalidades através do Spring Security
+Utilização de JWT para autenticação de usuários
+Controle de acesso a funcionalidades através do Spring Security
 
 Problemas Conhecidos
 
