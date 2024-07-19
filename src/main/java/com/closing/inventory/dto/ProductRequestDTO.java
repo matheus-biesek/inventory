@@ -1,4 +1,3 @@
 package com.closing.inventory.dto;
 
-public record ProductRequestDTO(String name, String size, String width, String token) {
-}
+public record ProductRequestDTO(String name, String size, String width, String token) {}

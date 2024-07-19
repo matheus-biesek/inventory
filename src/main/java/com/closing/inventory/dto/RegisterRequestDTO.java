@@ -1,4 +1,3 @@
 package com.closing.inventory.dto;
 
-public record RegisterRequestDTO(String username, String password) {
-}
+public record RegisterRequestDTO(String username, String password) {}
