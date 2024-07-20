@@ -2,28 +2,35 @@ version: '3.8'
 services:
   postgres:
     image: postgres
-    container_name: my-postgres
+    container_name: con-data-base
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: user-inventory
+      POSTGRES_PASSWORD: 73cg47t0A*
+      POSTGRES_DB: db-inventory
     networks:
-      - my-network
+      - net-inventory
+    volumes:
+      - vol_inventory:/var/lib/postgresql/data
 
-  spring-boot-app:
-    image: inventory:1.0
-    container_name: my-spring-boot-app
+  spring-boot:
+    image: inventory-1.0
+    container_name: con-spring-boot
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://my-postgres:5432/mydatabase
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_DATASOURCE_URL: jdbc:postgresql://con-data-base:5432/db-inventory
+      SPRING_DATASOURCE_USERNAME: user-inventory
+      SPRING_DATASOURCE_PASSWORD: 73cg47t0A*
+      API_SECURITY_TOKEN_SECRET: 359aK47U7V52l
     depends_on:
       - postgres
     networks:
-      - my-network
+      - net-inventory
 
 networks:
-  my-network:
+  net-inventory:
     driver: bridge
+
+volumes:
+  vol_inventory:
+    driver: local

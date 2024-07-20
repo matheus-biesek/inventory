@@ -26,8 +26,5 @@ COPY --from=build /app/target/inventory-0.0.1-SNAPSHOT.jar ./inventory.jar
 # Expor a porta que a aplicação usa
 EXPOSE 8080
 
-# Definir a variável de ambiente para o perfil docker
-ENV SPRING_PROFILES_ACTIVE=docker
-
-# Comando para iniciar a aplicação
-CMD ["java", "-jar", "inventory.jar"]
+# Comando para iniciar a aplicação e ativação do .properties de produção
+CMD ["java", "-jar", "inventory.jar", "--spring.profiles.active=prod"]
