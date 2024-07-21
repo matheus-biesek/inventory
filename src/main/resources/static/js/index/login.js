@@ -8,7 +8,7 @@ loginForm.addEventListener('submit', async (event) => {
     const password = formData.get('password');
 
     try {
-        const response = await fetch('http://localhost:8080/auth/login', {
+        const response = await fetch('http://3.17.160.44:8080/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
