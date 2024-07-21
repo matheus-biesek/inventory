@@ -7,8 +7,9 @@ async function registerUser() {
         document.getElementById('register-result').textContent = 'As senhas não coincidem';
         return;
     }
+    alert("se fodeu");
 
-    const response = await fetch('/auth/register', {
+    const response = await fetch('http://3.17.160.44:8080/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
