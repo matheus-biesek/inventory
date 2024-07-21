@@ -28,9 +28,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/register-user", "/login", "/register-material", "register-product", "/expenditure", "analyze", "sale").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/js/**", "/css/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/register-user", "/login", "/register-material", "/register-product", "/expenditure", "/analyze", "/sale").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/token-is-valid").permitAll()
+                        .requestMatchers("/js/**", "/css/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class);
