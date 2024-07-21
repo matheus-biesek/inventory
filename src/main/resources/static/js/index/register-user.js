@@ -8,7 +8,7 @@ async function registerUser() {
         return;
     }
 
-    const response = await fetch('http://3.17.160.44:8080/auth/register', {
+    const response = await fetch('/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
