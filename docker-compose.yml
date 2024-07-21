@@ -10,7 +10,7 @@ services:
     networks:
       - net-inventory
     volumes:
-      - vol_inventory:/var/lib/postgresql/data
+      - inventory-vol_inventory:/var/lib/postgresql/data
 
   spring-boot:
     image: inventory-1.0
@@ -32,5 +32,5 @@ networks:
     driver: bridge
 
 volumes:
-  vol_inventory:
+  inventory-vol_inventory:
     driver: local
