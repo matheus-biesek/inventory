@@ -3,6 +3,10 @@ import {
     sendGetRequest
 } from '../utils/func-ipa.js';
 
+import {
+    formatProductName
+} from '../utils/func-get-input.js';
+
 function getSelectedExpenditureType() {
     const expenseTypeElements = document.getElementsByName('expenditure-type');
     for (const element of expenseTypeElements) {
@@ -21,14 +25,14 @@ function createExpenditure() {
     document.getElementById("result-create-expenditure").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja criar uma nova despesa?")) {
         const expenditure = {
-            name: document.getElementById('txt-name-expenditure').value.replace(/\s+/g, '_'),
+            name: formatProductName(document.getElementById('txt-name-expenditure').value),
             width: document.getElementById('txt-width-expenditure').value,
             value: document.getElementById('num-value-expenditure').value,
             observation: document.getElementById('txt-observation-expenditure').value,
             size: document.getElementById('num-quantity-expenditure').value,
             token: sessionStorage.getItem('token'),
         };
-        if (!expenditure.name  || !expenditure.width || !expenditure.value || !expenditure.size) {
+        if (!expenditure.name || !expenditure.width || !expenditure.value || !expenditure.size) {
             alert("Todos os campos do produto são obrigatórios.");
             return;
         }
@@ -51,10 +55,10 @@ function createExpenditure() {
 
 function stringListOfExpenditureSend() {
     const expenditure = {
-        name: document.getElementById("txt-name-expenditure").value.replace(/\s+/g, '_'),
+        name: formatProductName(document.getElementById("txt-name-expenditure").value),
         width: document.getElementById("txt-width-expenditure").value,
     }
-    if (!expenditure.name  || !expenditure.width) {
+    if (!expenditure.name || !expenditure.width) {
         alert("Todos os campos do produto são obrigatórios.");
         return;
     }

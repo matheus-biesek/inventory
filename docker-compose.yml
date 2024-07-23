@@ -3,9 +3,9 @@ services:
     image: postgres
     container_name: con-data-base
     environment:
-      POSTGRES_USER: user-inventory
-      POSTGRES_PASSWORD: 73cg47t0A*
-      POSTGRES_DB: db-inventory
+      POSTGRES_USER: usuario_banco_de_dados
+      POSTGRES_PASSWORD: senha_banco_de_dados
+      POSTGRES_DB: meu_banco_de_dados
     networks:
       - net-inventory
     volumes:
@@ -17,10 +17,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://con-data-base:5432/db-inventory
-      SPRING_DATASOURCE_USERNAME: user-inventory
-      SPRING_DATASOURCE_PASSWORD: 73cg47t0A*
-      API_SECURITY_TOKEN_SECRET: 359aK47U7V52l
+      SPRING_DATASOURCE_URL: jdbc:postgresql://con-data-base:5432/meu_banco_de_dados
+      SPRING_DATASOURCE_USERNAME: usuario_banco_de_dados
+      SPRING_DATASOURCE_PASSWORD: senha_banco_de_dados
+      API_SECURITY_TOKEN_SECRET: my-secret-key
     depends_on:
       - postgres
     networks:

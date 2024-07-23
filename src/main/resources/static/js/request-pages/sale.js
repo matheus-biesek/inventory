@@ -3,11 +3,15 @@ import {
     sendGetRequest
 } from '../utils/func-ipa.js';
 
+import {
+    formatProductName
+} from '../utils/func-get-input.js'; // Adicione a importação da função
+
 function createSale() {
     document.getElementById("result-create-sale").innerHTML = "";
-    if (window.confirm("Você tem certeza que deseja cria uma nova venda?")) {
+    if (window.confirm("Você tem certeza que deseja criar uma nova venda?")) {
         const sale = {
-            name: document.getElementById('txt-name-product').value.replace(/\s+/g, '_'),
+            name: formatProductName(document.getElementById('txt-name-product').value), // Usar a função formatProductName
             size: document.getElementById('txt-size-product').value,
             width: document.getElementById('txt-width-product').value,
             value: document.getElementById('num-value-sale').value,
@@ -35,7 +39,7 @@ function stringListStockSale() {
 
 function stringListSaleOfProductSend() {
     const product = {
-        name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
+        name: formatProductName(document.getElementById("txt-name-product").value), // Usar a função formatProductName
         width: document.getElementById("txt-width-product").value,
         size: document.getElementById("txt-size-product").value,
     }

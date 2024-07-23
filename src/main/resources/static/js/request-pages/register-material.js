@@ -3,7 +3,11 @@ import {
     sendGetRequest,
 } from '../utils/func-ipa.js';
 
-function stringListStockMaterial(){
+import {
+    formatProductName
+} from '../utils/func-get-input.js';
+
+function stringListStockMaterial() {
     sendGetRequest('/ipa-material/string-list-stock', 'result-string-list-stock-material');
 }
 
@@ -11,7 +15,7 @@ function createMaterial() {
     document.getElementById("result-create-material").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja criar um novo material?")) {
         const material = {
-            name: document.getElementById("txt-name-material").value.replace(/\s+/g, '_'),
+            name: formatProductName(document.getElementById("txt-name-material").value),
             width: document.getElementById("txt-width-material").value,
             token: sessionStorage.getItem('token')
         }
@@ -25,7 +29,7 @@ function createMaterial() {
 
 function stringListMovementsOfMaterialSend() {
     const material = {
-        name: document.getElementById("txt-name-material").value.replace(/\s+/g, '_'),
+        name: formatProductName(document.getElementById("txt-name-material").value),
         width: document.getElementById("txt-width-material").value
     }
     if (!material.name || !material.width) {
@@ -39,7 +43,7 @@ function removeQuantityMaterial() {
     document.getElementById("result-append-quantity-material").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja remover a quantidade do material?")) {
         const movementsRequest = {
-            name: document.getElementById("txt-name-material").value.replace(/\s+/g, '_'),
+            name: formatProductName(document.getElementById("txt-name-material").value),
             width: document.getElementById("txt-width-material").value,
             quantity: document.getElementById("num-remove-quantity-material").value,
             token: sessionStorage.getItem('token')
@@ -57,8 +61,8 @@ function removeQuantityMaterial() {
     }
 }
 
-function stringListAllMaterialMovements(){
-    sendGetRequest("/ipa-material/string-list-all-movements", "result-string-list-all-material-movements")
+function stringListAllMaterialMovements() {
+    sendGetRequest("/ipa-material/string-list-all-movements", "result-string-list-all-material-movements");
 }
 
 window.stringListStockMaterial = stringListStockMaterial;

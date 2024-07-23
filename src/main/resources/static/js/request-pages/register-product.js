@@ -3,7 +3,11 @@ import {
     sendGetRequest,
 } from '../utils/func-ipa.js';
 
-function stringListStockProduct(){
+import {
+    formatProductName
+} from '../utils/func-get-input.js';
+
+function stringListStockProduct() {
     sendGetRequest('/ipa-product/string-list-stock', 'result-string-list-stock-product');
 }
 
@@ -11,7 +15,7 @@ function createProduct() {
     document.getElementById("result-create-product").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja adicionar um novo produto no banco de dados?")) {
         const product = {
-            name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
+            name: formatProductName(document.getElementById("txt-name-product").value),
             size: document.getElementById("txt-size-product").value,
             width: document.getElementById("txt-width-product").value,
             token: sessionStorage.getItem('token'),
@@ -26,7 +30,7 @@ function createProduct() {
 
 function stringListMovementsOfProductSend() {
     const product = {
-        name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
+        name: formatProductName(document.getElementById("txt-name-product").value),
         size: document.getElementById("txt-size-product").value,
         width: document.getElementById("txt-width-product").value,
     }
@@ -41,7 +45,7 @@ function addQuantityProduct() {
     document.getElementById("result-add-quantity-product").innerHTML = "";
     if (window.confirm("Você tem certeza que deseja adicionar uma nova quantidade no produto?")) {
         const moveRequest = {
-            name: document.getElementById("txt-name-product").value.replace(/\s+/g, '_'),
+            name: formatProductName(document.getElementById("txt-name-product").value),
             width: document.getElementById("txt-width-product").value,
             size: document.getElementById("txt-size-product").value,
             amount: parseInt(document.getElementById("num-add-quantity-product").value, 10),
@@ -60,12 +64,12 @@ function addQuantityProduct() {
     }
 }
 
-function stringListAllProductMovements(){
-    sendGetRequest("/ipa-product/string-list-all-movements", "result-string-list-all-product-movements")
+function stringListAllProductMovements() {
+    sendGetRequest("/ipa-product/string-list-all-movements", "result-string-list-all-product-movements");
 }
 
 window.stringListStockProduct = stringListStockProduct;
-window.createProduct =createProduct;
+window.createProduct = createProduct;
 window.stringListMovementsOfProductSend = stringListMovementsOfProductSend;
 window.addQuantityProduct = addQuantityProduct;
 window.stringListAllProductMovements = stringListAllProductMovements;
